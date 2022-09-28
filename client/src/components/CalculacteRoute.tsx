@@ -26,7 +26,6 @@ function CalculateRoute({validRoutes, UserInput}: CalculateRouteProps) {
     result.forEach(route => {
       sum += route?.cost! 
     });
-    console.log(result, "Total Cost: " + sum);
 
     function ParseJsonToRoutes(routes: string[]) : DeliveryRoute[]
     {

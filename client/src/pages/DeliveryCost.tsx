@@ -12,10 +12,9 @@ function DeliveryCost() {
   
   return (<>
     <div>
+      <label>Delivery cost: </label>
       <input
         type="text"
-        id="message"
-        name="message"
         onChange={handleChange}
         value={input}
       />
