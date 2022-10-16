@@ -15,6 +15,7 @@ function PossibleRoute() {
         <input
           type="text"
           onChange={handleChange}
+          placeholder='For example "E-E"'
           value={input}
           maxLength={3}
 
