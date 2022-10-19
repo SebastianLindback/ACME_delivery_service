@@ -2,15 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import DeliveryCost from './pages/DeliveryCost';
+import DeliveryCost from './components/DeliveryCost';
+import RoutePossibilityComponent from './components/RoutePossibilityComponent';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
-root.render(
-  <React.StrictMode>
+root.render(<>
+    <RoutePossibilityComponent/>
     <DeliveryCost />
-  </React.StrictMode>
+    </>
 );
 
 // If you want to start measuring performance in your app, pass a function

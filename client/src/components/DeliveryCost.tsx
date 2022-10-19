@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import CalculateRoute from '../components/CalculacteRoute';
-import { DeliveryRoute } from '../models/DeliveryRoute'
+import CalculateRoute from './CalculacteRoute';
 
 function DeliveryCost() {
   const {Routes} = require('../context/routes.json');
