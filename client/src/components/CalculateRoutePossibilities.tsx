@@ -21,19 +21,32 @@ function CalculateRoutePossibilities({validRoutes, UserInput}  : CalculateRouteP
     const routes = ParseJsonToRoutes(validRoutes);
     const userNodes = UserInput.split("-");
     
-    const addRoutes = (arrayOfRoutes_toAdd: DeliveryRoute[], currentRoute : DeliveryRoute[]) : DeliveryRoute[][] => {
-      let result : DeliveryRoute[][] = [];
-      arrayOfRoutes_toAdd.forEach(routeToAdd => {      
-        if (currentRoute.includes(routeToAdd)) return; 
-
-        result.push([...currentRoute, routeToAdd])
-      });
+    const createNewRoutes = (arrayOfRoutes_toAdd: DeliveryRoute[], currentRoute : DeliveryRoute[]) : DeliveryRoute[][] => {
+      const results : DeliveryRoute[][] = [];
       
-      return result;
+      arrayOfRoutes_toAdd.forEach(routeToAdd => {    
+        results.push([...currentRoute, routeToAdd])
+      });
+
+      return results;
     };
+
+    const findNextDestinationFromRoute = (routeDestination :string, currentRoutes : DeliveryRoute[]) => {
+      const result = currentRoutes.filter(
+          route => (
+            (route.node_ofOrigin === routeDestination) 
+          ));
+      return result;
+    }
+
+    const compareRoutesToCollection = (oldCollection :DeliveryRoute[][]) => {
+      const results = new Set([...oldCollection]);
+      
+      return Array.from(results);
+    }
     // init multidimensionalArray with the first results of possible routes
     let CollectionOfDeliveryRoutes : DeliveryRoute[][] = [];
-    let initialQuery = getMatchingRoutes(userNodes[0], routes);
+    let initialQuery = findNextDestinationFromRoute(userNodes[0], routes);
     initialQuery.forEach(route => CollectionOfDeliveryRoutes.push([route]));
 
     // Step by step. Loop the Collection of Delivery Routes for Possible routes. 
@@ -43,41 +56,28 @@ function CalculateRoutePossibilities({validRoutes, UserInput}  : CalculateRouteP
     for (let searches = 0; searches < maxSearches; searches++){ 
       if (JSON.stringify( y) ===  JSON.stringify( CollectionOfDeliveryRoutes)) searches += maxSearches;
       y = [...CollectionOfDeliveryRoutes];
+      let collection : DeliveryRoute[][] = [];
+      
 
-      // eslint-disable-next-line no-loop-func
-      CollectionOfDeliveryRoutes.forEach(deliveryRoutes => {
-
-        const routes_lastRoute = deliveryRoutes[deliveryRoutes.length-1];
+      CollectionOfDeliveryRoutes.forEach(possibleRoute => {
+        const routes_lastRoute = possibleRoute[possibleRoute.length-1];
         if (routes_lastRoute.node_ofDestination === userNodes[1]) return;
         
-        const MatchingRoutes = addRoutes(getMatchingRoutes(routes_lastRoute.node_ofDestination, routes), deliveryRoutes) ;
+        const matchingRoutes = findNextDestinationFromRoute(routes_lastRoute.node_ofDestination, routes);
+        const newRoutes = createNewRoutes(matchingRoutes, possibleRoute) ;
         
-        
-        
-        
-        // MatchingRoutes.forEach(MatchingRoute => {
-          
-        //   if (route.includes(MatchingRoute)) return; 
-          
-        //   if (MatchingRoutes.indexOf(MatchingRoute) === 0) deliveryRoutes.push(MatchingRoute);
-        //   else {
-        //     const result = [...route];
-        //     result.push(MatchingRoute);
-        //     let existingRoute = false;
-        //     CollectionOfDeliveryRoutes.forEach(deliveryRoute => {
-        //       if (JSON.stringify(deliveryRoute) === JSON.stringify(result)){
-        //       existingRoute = true;
-        //       }
-        //     });            
-            
-        //     if (!existingRoute){
-        //     CollectionOfDeliveryRoutes.push(result)}
-        //   }
-          
-        // });
-        
+        if (newRoutes.length < 1) return;
+        newRoutes.forEach(item => {
+          collection.push(item);
+        });
+
       });
+      if (collection.length < 1) break;
+      CollectionOfDeliveryRoutes = [...compareRoutesToCollection([...collection])];
+      console.log(collection);
+      
     }
+    
     // Cleanup and remove incomplete routes.
     CollectionOfDeliveryRoutes = CollectionOfDeliveryRoutes.filter(deliveryRoute => {
       return deliveryRoute[deliveryRoute.length-1].node_ofDestination === userNodes[1];
@@ -107,13 +107,7 @@ function CalculateRoutePossibilities({validRoutes, UserInput}  : CalculateRouteP
         return (result)
         
     }
-    function getMatchingRoutes(routeDestination :string, currentRoutes : DeliveryRoute[]) {
-      const result = currentRoutes.filter(
-          route => (
-            (route.node_ofOrigin === routeDestination) 
-          ));
-      return result;
-  }
+    
   return (<>
   </>)
 }
