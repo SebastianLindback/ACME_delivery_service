@@ -2,14 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import DeliveryCost from './pages/DeliveryCost';
-import PossibleRoute from './pages/PossibleRoute';
+import DeliveryCost from './components/DeliveryCost';
+import RoutePossibilityComponent from './components/RoutePossibilityComponent';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(<>
-    <PossibleRoute/>
+    <RoutePossibilityComponent/>
     <DeliveryCost />
     </>
 );
