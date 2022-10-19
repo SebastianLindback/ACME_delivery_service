@@ -7,14 +7,17 @@ A test case to see how relevant my skills are to the workplace
 - Current node network will be A --> F. And routes will only go one way.
 - Routes will follow the format of: [node_ofOrigin] + [node_ofDestination] + [cost]. example: AB1 (from A to B with a cost of 1)
 
-- Case 1: (Incomplete) User should be able to customize his own delivery with the current routes.
-  example: A delivery from A to E by using routes AB1 + BE3. Cost of this should be 4.
-
+- Case 1: (Complete) User should be able to customize his own delivery with the current routes.
+  example:
+  [A-B-E] output: 4
+  [A-D] output: 10
+  [E-A-C-F] output: 8
+  [A-D-F] output: "No such route"
 - Case 2: (Complete) Calculate the number of possible delivery route that can be constructed by the given
   conditions. ( Do not count the route that has 0 costs)
   example: The number of the possible delivery routes from E to E without using
   the same route twice in a delivery route. [result: 5]
-  E - E,
+  [E - E],
   EB3 - BE3 (complete route)
   EA2 - AB1 - BE3 (complete route)
   EA2 - AC4 - CD4 - DE1 (complete route)

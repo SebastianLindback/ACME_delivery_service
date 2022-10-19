@@ -1,11 +1,8 @@
 import React from 'react'
 import { DeliveryRoute } from '../models/DeliveryRoute';
 
-export type CalculateRoutePossibilitiesProps = {
-    validRoutes: string[],
-    UserInput : string
-  };
-const CalculateRoutePossibilities = (validRoutes : string[], UserInput: string ) => {
+const CalculateRoutePossibilities = (UserInput: string ) => {
+    const {Routes} = require('../context/routes.json');
     const ParseJsonToRoutes = (routes: string[]) : DeliveryRoute[] =>
     {
         let result : DeliveryRoute[] = [];
@@ -24,7 +21,7 @@ const CalculateRoutePossibilities = (validRoutes : string[], UserInput: string )
         }
         return (result)
     }
-    const routes = ParseJsonToRoutes(validRoutes);
+    const validRoutes = ParseJsonToRoutes(Routes);
     const userNodes = UserInput.split("-");
     
     
@@ -102,7 +99,7 @@ const CalculateRoutePossibilities = (validRoutes : string[], UserInput: string )
       return result;
     }
     
-  return (getPossibleRoutes(routes, userNodes[1], userNodes[0]))
+  return (getPossibleRoutes(validRoutes, userNodes[1], userNodes[0]))
 }
 
 export default CalculateRoutePossibilities

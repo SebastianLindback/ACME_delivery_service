@@ -3,20 +3,22 @@ import { DeliveryRoute } from '../models/DeliveryRoute';
 import CalculateRoutePossibilities from '../utils/CalculateRoutePossibilities';
 
 function RoutePossibilityComponent() {
-    const {Routes} = require('../context/routes.json');
-    const [input, setInput] = useState("")
-    const [tableBody, setTableBody] = useState<JSX.Element[]>();
-    const [tableHeader, setTableHeader] = useState<JSX.Element>();
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      setInput(event.target.value);
+  const [input, setInput] = useState("")
+  const [tableBody, setTableBody] = useState<JSX.Element[]>();
+  const [tableHeader, setTableHeader] = useState<JSX.Element>();
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInput(event.target.value);
+    
       
-      
-    };
-    const onKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-      if (event.key === "Enter") {
-        btn();
+  };
+  const onKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+        calculateTable();
       }
-  }
+    }
+    const calculateTable = () => {
+      createPossibleRouteResult(CalculateRoutePossibilities(input.toUpperCase()));
+    }
     const tableClick = (route : DeliveryRoute[]) =>{
       console.log(route);
       const row: JSX.Element[] = [];
@@ -26,16 +28,16 @@ function RoutePossibilityComponent() {
         <td>{item.node_ofOrigin}</td>
         <td>{item.node_ofDestination}</td>
         <td>{item.cost}</td>
-      </tr>);
+        </tr>);
       
-    });
-    setTableHeader(<tr>
-      <th scope="col">Stop</th>
-      <th scope="col">From</th>
-      <th scope="col">To</th>
-      <th scope="col">Cost</th>
-    </tr>);
-    setTableBody(row);
+      });
+      setTableHeader(<tr>
+        <th scope="col">Stop</th>
+        <th scope="col">From</th>
+        <th scope="col">To</th>
+        <th scope="col">Cost</th>
+      </tr>);
+      setTableBody(row);
     }
     const createPossibleRouteResult = (possibleRoutes : DeliveryRoute[][]) => {
       console.log(possibleRoutes);
@@ -60,14 +62,9 @@ function RoutePossibilityComponent() {
       setTableBody(row);
       
     }
-    const btn = () => {
-      createPossibleRouteResult(CalculateRoutePossibilities(Routes, input.toUpperCase()));
-    }
-    //
     
     return (<>
-      <div className='col-12 '>
-      <div className='row col-12 d-flex flex-colum justify-content-between '>
+      <div className='row col-6 d-flex flex-colum justify-content-between mx-auto'>
         <label className='col-4 text-center'><strong> Possible routes: </strong></label>
           <input
             className='col-4 '
@@ -78,7 +75,7 @@ function RoutePossibilityComponent() {
             maxLength={3}
             onKeyPress={onKeyPress}
           />
-          <button className='col-4' onClick={btn}>check routes</button>
+          <button className='col-4' onClick={calculateTable}>check routes</button>
         </div>
         <div className='row col-12'>
         <table className=" table table-striped ">
@@ -92,7 +89,6 @@ function RoutePossibilityComponent() {
         </tbody>
         </table>
           
-        </div>
       </div>
       </>)
 }

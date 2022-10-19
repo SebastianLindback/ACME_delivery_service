@@ -1,13 +1,9 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { DeliveryRoute } from '../models/DeliveryRoute';
 
-export type CalculateRouteProps = {
-    validRoutes: string[],
-    UserInput : string
-  };
-
-function CalculateRoute({validRoutes, UserInput}: CalculateRouteProps) {
-    const currentRoutes = ParseJsonToRoutes(validRoutes);
+function CalculateRoute(UserInput : string) {
+  const {Routes} = require('../context/routes.json');
+    const currentRoutes = ParseJsonToRoutes(Routes);
     const userNodes = UserInput.split("-");
     
     // Match the user nodes with the valid routes
@@ -15,18 +11,12 @@ function CalculateRoute({validRoutes, UserInput}: CalculateRouteProps) {
     for (let index = 1; index < userNodes.length; index++) {
       const matchingRoutes = currentRoutes.find(
         route => (
-          (route.node_ofOrigin == userNodes[index-1]) 
-        &&(route.node_ofDestination == userNodes[index])));
+          (route.node_ofOrigin === userNodes[index-1]) 
+        &&(route.node_ofDestination === userNodes[index])));
       
-      if (matchingRoutes != undefined) result.push(matchingRoutes!);
+      if (matchingRoutes !== undefined) result.push(matchingRoutes!);
     }
-
-    // Calculate the cost by adding all the matching routes
-    let sum = 0;
-    result.forEach(route => {
-      sum += route?.cost! 
-    });
-
+    
     function ParseJsonToRoutes(routes: string[]) : DeliveryRoute[]
     {
         let result : DeliveryRoute[] = [];
@@ -47,9 +37,7 @@ function CalculateRoute({validRoutes, UserInput}: CalculateRouteProps) {
         
     }
      
-    return (<p>{(result.length >= userNodes.length-1 && result.length > 0)
-      ? `The delivery cost for route ${UserInput} is ${sum}` 
-      : `No Such Route`}</p>)
+    return (result)
   
   };
 
