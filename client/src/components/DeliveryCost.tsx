@@ -15,7 +15,7 @@ function DeliveryCost() {
   });
   
   return (<>
-    <div className='row col-6 d-flex flex-colum justify-content-center mx-auto'>
+    <div className='row col-sm-12  col-lg-8 d-flex flex-colum justify-content-center mx-auto'>
       <label className="col-6 text-center"><strong>Delivery cost: </strong></label>
       <input
         className="col-6"
@@ -24,13 +24,15 @@ function DeliveryCost() {
         value={input}>
       </input>
     
+      <div className='row col-12 d-flex flex-colum justify-content-center mx-auto'>
+      <div className='alert alert-dark col-12 text-center'>
+        {(result.length > 0)
+        ? <span> The delivery cost for route <strong> {input.toUpperCase()} </strong> is <strong>{sum}</strong></span>
+        : <strong>No Such Route</strong>}
+        </div>
+    </div>
+    </div>
     
-    </div>
-    <div className='row col-4 d-flex flex-colum justify-content-center mx-auto'>
-      <span>{(result.length > 0)
-      ? `The delivery cost for route ${input.toUpperCase()} is ${sum}` 
-      : `No Such Route`}</span>
-    </div>
     </>)
 }
 
