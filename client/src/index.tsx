@@ -4,13 +4,17 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import DeliveryCost from './components/DeliveryCost';
 import RoutePossibilityComponent from './components/RoutePossibilityComponent';
+import CheapestRoute from './components/CheapestRoute';
+import DisplayAllVaildRoutes from './components/DisplayAllVaildRoutes';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(<>
-    <RoutePossibilityComponent/>
+    <DisplayAllVaildRoutes/>
     <DeliveryCost />
+    <CheapestRoute/>
+    <RoutePossibilityComponent/>
     </>
 );
 
