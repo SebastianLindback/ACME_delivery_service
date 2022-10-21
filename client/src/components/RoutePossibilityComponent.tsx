@@ -4,8 +4,17 @@ import CalculateRoutePossibilities from '../utils/CalculateRoutePossibilities';
 
 function RoutePossibilityComponent() {
   const [input, setInput] = useState("")
-  const [tableBody, setTableBody] = useState<JSX.Element[]>();
-  const [tableHeader, setTableHeader] = useState<JSX.Element>();
+  const [tableBody, setTableBody] = useState<JSX.Element[]>([<tr>
+    <th scope="row">.</th>
+    <td>..</td>
+    <td>...</td>
+    <td>....</td>
+  </tr>]);
+  const [tableHeader, setTableHeader] = useState<JSX.Element>(<tr>
+    <th scope="col">Route</th>
+    <th scope="col">Nr. of stops</th>
+    <th scope="col">Total cost</th>
+  </tr>);
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value);
     
@@ -64,7 +73,7 @@ function RoutePossibilityComponent() {
     }
     
     return (<>
-      <div className='row col-6 d-flex flex-colum justify-content-between mx-auto'>
+      <div className='row  col-sm-12  col-lg-8 d-flex flex-colum justify-content-between mx-auto'>
         <label className='col-4 text-center'><strong> Possible routes: </strong></label>
           <input
             className='col-4 '
@@ -76,11 +85,10 @@ function RoutePossibilityComponent() {
             onKeyPress={onKeyPress}
           />
           <button className='col-4' onClick={calculateTable}>check routes</button>
-        </div>
-        <div className='row col-12'>
+        
+          <div className='row col-12 mx-auto'>
         <table className=" table table-striped ">
           
-        <thead></thead>
         <thead className="thead">
           {tableHeader}
         </thead>
@@ -90,6 +98,8 @@ function RoutePossibilityComponent() {
         </table>
           
       </div>
+        </div>
+        
       </>)
 }
 
