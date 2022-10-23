@@ -9,8 +9,11 @@ const CalculateRoutePossibilities = (UserInput: string ) => {
       node_ofDestination : route.substring(1,2),
       cost : parseInt(route.substring(2))}
     ) );
-
-    const userNodes = UserInput.split("-");
+    const formatInput = (input: string) => {
+      if (!input.includes("-")) input = input.substring(0,1) + "-" + input.substring(2,1);
+      return input.toUpperCase();;
+    }
+    const userNodes = formatInput(UserInput).split("-");
 
     
     const getPossibleRoutes = (possibleRoutes : DeliveryRoute[], node_userDestination : string, node_userOrigin : string) => {
@@ -33,7 +36,7 @@ const CalculateRoutePossibilities = (UserInput: string ) => {
           return route[route.length-1].node_ofDestination === node_userDestination;
         });
       }
-      
+
       // init an array with the first check of routes from user origin
       let currentRoutePossibilities : DeliveryRoute[][] = [];
       let initialQuery = filter_RoutesMatchingNode(node_userOrigin, possibleRoutes);

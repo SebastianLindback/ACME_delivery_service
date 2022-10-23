@@ -15,20 +15,21 @@ function RoutePossibilityComponent() {
     <th scope="col">Nr. of stops</th>
     <th scope="col">Total cost</th>
   </tr>);
+  
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value);
-    
-      
+    calculateTable();
   };
   const onKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
         calculateTable();
       }
     }
-    const calculateTable = () => {
-      createPossibleRouteResult(CalculateRoutePossibilities(input.toUpperCase()));
-    }
-    const tableClick = (route : DeliveryRoute[]) =>{
+  const calculateTable = () => {
+    createPossibleRouteResult(CalculateRoutePossibilities(input));
+    
+  }
+  const tableClick = (route : DeliveryRoute[]) =>{
       console.log(route);
       const row: JSX.Element[] = [];
       route.forEach(item => {
@@ -71,9 +72,9 @@ function RoutePossibilityComponent() {
       setTableBody(row);
       
     }
-    
     return (<>
-      <div className='row  col-sm-12  col-lg-8 d-flex flex-colum justify-content-between mx-auto'>
+      <div className='row  col-sm-12  col-lg-8 d-flex flex-colum justify-content-between mx-auto case'>
+      <div className='col-12 text-center mx-auto'><span><strong> CASE 2 </strong></span></div>
         <label className='col-4 text-center'><strong> Possible routes: </strong></label>
           <input
             className='col-4 '
@@ -85,7 +86,7 @@ function RoutePossibilityComponent() {
             onKeyPress={onKeyPress}
           />
           <button className='col-4' onClick={calculateTable}>check routes</button>
-        
+          {tableBody.length > 1 ? <div className='col-12 text-center mx-auto'><span><em> click table row for route details </em></span></div> : <></>}
           <div className='row col-12 mx-auto'>
         <table className=" table table-striped ">
           

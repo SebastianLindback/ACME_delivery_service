@@ -15,6 +15,7 @@ function CheapestRoute() {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value);
   };
+
   const getCostSum = (array : DeliveryRoute[]) => {
     let sum = 0;
     array.forEach(item =>  {
@@ -22,6 +23,13 @@ function CheapestRoute() {
     })
     return sum;
   };
+
+  const onKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+        calculateTable();
+      }
+    }
+
   const possibleRoutes = CalculateRoutePossibilities(input.toUpperCase());
   let result : DeliveryRoute[] = [];
   possibleRoutes.forEach(route => {
@@ -61,7 +69,8 @@ function CheapestRoute() {
   
   
   return (
-    <div className='row col-sm-12  col-lg-8 d-flex flex-colum justify-content-center mx-auto'>
+    <div className='row col-sm-12  col-lg-8 d-flex flex-colum justify-content-center mx-auto case'>
+      <div className='col-12 text-center mx-auto'><span><strong> CASE 3 </strong></span></div>
       <label className="col-6 text-center"><strong>Cheapest route in between two stops: </strong></label>
       <input
         className="col-4"
@@ -69,11 +78,11 @@ function CheapestRoute() {
         onChange={handleChange}
         value={input}
         placeholder='For example "E-E"'
+        onKeyPress={onKeyPress}
         >
         
       </input>
       <button className='col-2' onClick={calculateTable}>check routes</button>
-
       <div className='row col-12'>
         <table className=" table table-striped ">
           

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import CalculateRoute from '../utils/CalculacteRoute';
+import CalculateRoute from '../utils/CalculateRoute';
 
 function DeliveryCost() {
   const [input, setInput] = useState("")
@@ -8,17 +8,14 @@ function DeliveryCost() {
     setInput(event.target.value);
   };
   
-  const formatInput = (input: string) => {
-    if (!input.includes("-")) input = input.substring(0,1) + "-" + input.substring(2,1);
-    return input.toUpperCase();;
-  }
-
-  const result = CalculateRoute(formatInput(input));
   
+
+  const result = CalculateRoute(input);
   
   
   return (
-    <div className='row col-sm-12  col-lg-8 d-flex flex-colum justify-content-center mx-auto'>
+    <div className='row col-sm-12  col-lg-8 d-flex flex-colum justify-content-center mx-auto case' >
+      <div className='col-12 text-center mx-auto'><span><strong> CASE 1 </strong></span></div>
       <label className="col-6 text-center"><strong>Delivery cost for route: </strong></label>
       <input
         className="col-6"

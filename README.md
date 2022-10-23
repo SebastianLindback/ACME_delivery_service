@@ -24,5 +24,5 @@ A test case to see how relevant my skills are to the workplace
   EA2 - AC4 - CF2 - FD1 - DE1 (complete route)
   EA2 - AD10 - DE1 (complete route)
 
-- Case 3: (Incomplete) Calculate the cheapest delivery route between two towns.
+- Case 3: (Complete) Calculate the cheapest delivery route between two towns.
   example: The cost of the cheapest delivery route between E to D. [result: 9]
