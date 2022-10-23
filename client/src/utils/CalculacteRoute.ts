@@ -12,15 +12,12 @@ function CalculateRoute(UserInput : string) {
     const userNodes = UserInput.split("-");
     
     // Match the user nodes with the valid routes
-    let result : DeliveryRoute[] = [];
-    for (let index = 1; index < userNodes.length; index++) {
-      const matchingRoutes = validRoutes.find(
+      const result = validRoutes.find(
         route => (
-          (route.node_ofOrigin === userNodes[index-1]) 
-        &&(route.node_ofDestination === userNodes[index])));
-      
-      if (matchingRoutes !== undefined) result.push(matchingRoutes!);
-    }
+          (route.node_ofOrigin === userNodes[0]) 
+        &&(route.node_ofDestination === userNodes[1])
+        ));
+    
      
     return (result)
   
