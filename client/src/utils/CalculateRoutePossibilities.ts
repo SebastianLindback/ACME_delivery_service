@@ -3,39 +3,24 @@ import { DeliveryRoute } from '../models/DeliveryRoute';
 
 const CalculateRoutePossibilities = (UserInput: string ) => {
     const {Routes} = require('../context/routes.json');
-    const ParseJsonToRoutes = (routes: string[]) : DeliveryRoute[] =>
-    {
-        let result : DeliveryRoute[] = [];
-        try {
-          routes.forEach((rawRoute : string) => {
-          let route : DeliveryRoute = {
-            node_ofOrigin: rawRoute.substring(0,1),
-            node_ofDestination : rawRoute.substring(1,2),
-            cost : parseInt(rawRoute.substring(2))
-          }
-          result.push(route);
-          });
-        } 
-        catch (error) {
-          console.log(`Route failed parsing \n error:`, error);  
-        }
-        return (result)
-    }
-    const validRoutes = ParseJsonToRoutes(Routes);
+    const validRoutes : DeliveryRoute[] = Routes.map((route: string) => (
+      {
+      node_ofOrigin: route.substring(0,1),
+      node_ofDestination : route.substring(1,2),
+      cost : parseInt(route.substring(2))}
+    ) );
+
     const userNodes = UserInput.split("-");
-    
-    
 
     
     const getPossibleRoutes = (possibleRoutes : DeliveryRoute[], userDestination : string, userOrigin : string) => {
 
       const createNewRoutes = (arrayOfRoutes_toAdd: DeliveryRoute[], currentRoute : DeliveryRoute[]) : DeliveryRoute[][] => {
-        const results : DeliveryRoute[][] = [];
-        
-        arrayOfRoutes_toAdd.forEach(routeToAdd => {    
-          results.push([...currentRoute, routeToAdd])
-        });
-  
+        const results : DeliveryRoute[][] = arrayOfRoutes_toAdd.map(
+          routeToAdd => (    
+            [...currentRoute, routeToAdd]
+          )
+        );
         return results;
       };
   
@@ -47,7 +32,7 @@ const CalculateRoutePossibilities = (UserInput: string ) => {
         return result;
       }
   
-      const removeInCompleteRoutes = (arrayOfRoutes : DeliveryRoute[][], userDestination : string) => {
+      const filter_CompleteRoutes = (arrayOfRoutes : DeliveryRoute[][], userDestination : string) => {
         arrayOfRoutes = arrayOfRoutes.filter(route => {
           return route[route.length-1].node_ofDestination === userDestination;
         })
@@ -95,7 +80,7 @@ const CalculateRoutePossibilities = (UserInput: string ) => {
         currentRoutePossibilities = [ ...searchResults];
         
       }
-      const result = removeInCompleteRoutes(currentRoutePossibilities, userDestination)
+      const result = filter_CompleteRoutes(currentRoutePossibilities, userDestination)
       return result;
     }
     
