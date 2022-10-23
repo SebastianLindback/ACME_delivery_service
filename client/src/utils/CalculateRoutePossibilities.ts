@@ -13,35 +13,30 @@ const CalculateRoutePossibilities = (UserInput: string ) => {
     const userNodes = UserInput.split("-");
 
     
-    const getPossibleRoutes = (possibleRoutes : DeliveryRoute[], userDestination : string, userOrigin : string) => {
+    const getPossibleRoutes = (possibleRoutes : DeliveryRoute[], node_userDestination : string, node_userOrigin : string) => {
 
       const createNewRoutes = (arrayOfRoutes_toAdd: DeliveryRoute[], currentRoute : DeliveryRoute[]) : DeliveryRoute[][] => {
-        const results : DeliveryRoute[][] = arrayOfRoutes_toAdd.map(
-          routeToAdd => (    
-            [...currentRoute, routeToAdd]
-          )
+        return arrayOfRoutes_toAdd.map(
+          routeToAdd => ( [...currentRoute, routeToAdd] )
         );
-        return results;
       };
   
-      const findNextDestinationFromRoute = (routeDestination :string, currentRoutes : DeliveryRoute[]) => {
-        const result = currentRoutes.filter(
+      const filter_RoutesMatchingNode = (nodeOfDestination :string, currentRoutes : DeliveryRoute[]) => {
+        return currentRoutes.filter(
             route => (
-              (route.node_ofOrigin === routeDestination) 
+              (route.node_ofOrigin === nodeOfDestination) 
             ));
-        return result;
       }
   
-      const filter_CompleteRoutes = (arrayOfRoutes : DeliveryRoute[][], userDestination : string) => {
-        arrayOfRoutes = arrayOfRoutes.filter(route => {
-          return route[route.length-1].node_ofDestination === userDestination;
-        })
-        return arrayOfRoutes;
-  
+      const filter_CompleteRoutes = (arrayOfRoutes : DeliveryRoute[][], node_userDestination : string) => {
+        return arrayOfRoutes.filter(route => {
+          return route[route.length-1].node_ofDestination === node_userDestination;
+        });
       }
+      
       // init an array with the first check of routes from user origin
       let currentRoutePossibilities : DeliveryRoute[][] = [];
-      let initialQuery = findNextDestinationFromRoute(userOrigin, possibleRoutes);
+      let initialQuery = filter_RoutesMatchingNode(node_userOrigin, possibleRoutes);
       initialQuery.forEach(route => currentRoutePossibilities.push([route]));
 
       // loop for each current route until all route possibilities been found
@@ -54,13 +49,12 @@ const CalculateRoutePossibilities = (UserInput: string ) => {
           const lastDestinationInRoute = routePossibility[routePossibility.length-1].node_ofDestination;
           
           // return if the route is complete
-          if (lastDestinationInRoute === userDestination) return;
+          if (lastDestinationInRoute === node_userDestination) return;
           routesToRemove.push(routePossibility);
           
           // search and get further routes
-          const matchingRoutes = findNextDestinationFromRoute(lastDestinationInRoute, possibleRoutes);
+          const matchingRoutes = filter_RoutesMatchingNode(lastDestinationInRoute, possibleRoutes);
           const newSearchResults = createNewRoutes(matchingRoutes, routePossibility) ;
-          
           
           // return if none where found
           if (newSearchResults.length === 0) { return;}
@@ -80,7 +74,7 @@ const CalculateRoutePossibilities = (UserInput: string ) => {
         currentRoutePossibilities = [ ...searchResults];
         
       }
-      const result = filter_CompleteRoutes(currentRoutePossibilities, userDestination)
+      const result = filter_CompleteRoutes(currentRoutePossibilities, node_userDestination)
       return result;
     }
     
