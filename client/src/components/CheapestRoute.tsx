@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { DeliveryRoute } from '../models/DeliveryRoute';
 import CalculateRoutePossibilities from '../utils/CalculateRoutePossibilities';
 
 function CheapestRoute() {
-    const [input, setInput] = useState("");
+    const inputRef = useRef<HTMLInputElement>();
     const [tableBody, setTableBody] = useState<JSX.Element[]>([<tr>
       <th scope="row">.</th>
       <td>..</td>
@@ -12,9 +12,6 @@ function CheapestRoute() {
       
     </tr>]);
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInput(event.target.value);
-  };
 
   const getCostSum = (array : DeliveryRoute[]) => {
     let sum = 0;
@@ -30,17 +27,26 @@ function CheapestRoute() {
       }
     }
 
-  const possibleRoutes = CalculateRoutePossibilities(input.toUpperCase());
-  let result : DeliveryRoute[] = [];
-  possibleRoutes.forEach(route => {
-    if (result.length === 0) {result = [...route]}
-    if (getCostSum(result) > getCostSum(route)) {result = [...route]}
-  })
+  
   
 
   const createPossibleRouteResult = (possibleRoutes : DeliveryRoute[]) => {
     const row: JSX.Element[] = [];
     
+    if (possibleRoutes.length === 0){
+      row.push(
+        <tr>
+          <th scope="row">No such route</th>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      );
+        
+      setTableBody(row);
+      return 
+    }
+
     possibleRoutes.forEach(route => {
     
        row.push(<tr key={"A" + possibleRoutes.indexOf(route) }>
@@ -51,19 +57,33 @@ function CheapestRoute() {
       
     </tr>);
       
-  });
-  row.push(<tr>
-    <th scope="row">TOTAL COST:</th>
-    <td><strong> {getCostSum(possibleRoutes)}</strong></td>
-    <td></td>
-    <td></td>
-  </tr>);
+    });
+    row.push(<tr>
+      <th scope="row">TOTAL COST:</th>
+      <td><strong> {getCostSum(possibleRoutes)}</strong></td>
+      <td></td>
+      <td></td>
+    </tr>);
     
     setTableBody(row);
     
   }
   const calculateTable = () => {
+    let result : DeliveryRoute[] = [];
+
+    if (!inputRef!.current!.value){
+      createPossibleRouteResult(result);
+      return
+    }
+    
+    const possibleRoutes = CalculateRoutePossibilities(inputRef!.current!.value);
+    possibleRoutes.forEach(route => {
+      if (result.length === 0) {result = [...route]}
+      if (getCostSum(result) > getCostSum(route)) {result = [...route]}
+    })
+    
     createPossibleRouteResult(result);
+    
   }
   
   
@@ -73,12 +93,11 @@ function CheapestRoute() {
       <div className='col-12 text-center mx-auto'><span><strong> CASE 3 </strong></span></div>
       <label className="col-6 text-center"><strong>Cheapest route in between two stops: </strong></label>
       <input
+        ref={inputRef as React.LegacyRef<HTMLInputElement>}
         className="col-4"
         type="text"
-        onChange={handleChange}
-        value={input}
         placeholder='For example "E-E"'
-        onKeyPress={onKeyPress}
+        onKeyDown={onKeyPress}
         >
         
       </input>

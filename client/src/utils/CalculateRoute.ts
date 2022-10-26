@@ -9,8 +9,11 @@ function CalculateRoute(UserInput : string) {
       node_ofDestination : route.substring(1,2),
       cost : parseInt(route.substring(2))}
     ) )
-    const userNodes = UserInput.split("-");
-    
+    const formatInput = (input: string) => {
+      if (!input.includes("-")) input = input.substring(0,1) + "-" + input.substring(2,1);
+      return input.toUpperCase();;
+    }
+    const userNodes = formatInput(UserInput).split("-");
     // Match the user nodes with the valid routes
       const result = validRoutes.find(
         route => (

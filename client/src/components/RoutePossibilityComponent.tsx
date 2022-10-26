@@ -1,32 +1,31 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { DeliveryRoute } from '../models/DeliveryRoute';
 import CalculateRoutePossibilities from '../utils/CalculateRoutePossibilities';
 
 function RoutePossibilityComponent() {
-  const [input, setInput] = useState("")
+  const inputRef = useRef<HTMLInputElement>();
+  
   const [tableBody, setTableBody] = useState<JSX.Element[]>([<tr>
     <th scope="row">.</th>
     <td>..</td>
     <td>...</td>
     <td>....</td>
   </tr>]);
+
   const [tableHeader, setTableHeader] = useState<JSX.Element>(<tr>
     <th scope="col">Route</th>
     <th scope="col">Nr. of stops</th>
     <th scope="col">Total cost</th>
   </tr>);
   
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInput(event.target.value);
-    calculateTable();
-  };
   const onKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
         calculateTable();
       }
     }
   const calculateTable = () => {
-    createPossibleRouteResult(CalculateRoutePossibilities(input));
+    if(inputRef.current)
+    createPossibleRouteResult(CalculateRoutePossibilities(inputRef.current.value));
     
   }
   const tableClick = (route : DeliveryRoute[]) =>{
@@ -77,11 +76,10 @@ function RoutePossibilityComponent() {
       <div className='col-12 text-center mx-auto'><span><strong> CASE 2 </strong></span></div>
         <label className='col-4 text-center'><strong> Possible routes: </strong></label>
           <input
+            ref={inputRef as React.LegacyRef<HTMLInputElement>}
             className='col-4 '
             type="text"
-            onChange={handleChange}
             placeholder='For example "E-E"'
-            value={input}
             maxLength={3}
             onKeyPress={onKeyPress}
           />
